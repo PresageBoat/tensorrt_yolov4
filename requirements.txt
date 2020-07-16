@@ -1,0 +1,5 @@
+cuda 10.0
+cudnn 7.6.3
+opencv 2/3
+tensorrt 7.0
+boost 1.65
