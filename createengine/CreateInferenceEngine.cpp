@@ -11,15 +11,15 @@
 #include <NvInferPlugin.h>
 #include <NvInferRuntime.h>
 #include <cuda_runtime_api.h>
-#include "../TensorRTYoloV4/logging.h"
-#include "../TensorRTYoloV4/yololayer.h"
-#include "../TensorRTYoloV4/mish.h"
+#include "../inferencedll/logging.h"
+#include "../inferencedll/yololayer.h"
+#include "../inferencedll/mish.h"
 #include "./calibrator.h"
 
 #define DEVICE 0 //GPU id
 #define NMS_THRESH 0.4
 #define BBOX_CONF_THRESH 0.5
-#define BATCH_SIZE 128
+#define BATCH_SIZE 1
 #define CALIB_IMAGEDIR "../model/calibratorimages"
 #define CALIBTABLE_PATH "../model/yolov4-coco/calibration.table"
 
@@ -486,9 +486,9 @@ void CreateTRTEngine(const std::string wtspath, const std::string enginepath, Da
 
 int main()
 {
-	const std::string wtspath = "../model/yolov4-coco/yolov4-416.wts";
-	const std::string enginepath = "../Export/model/yolov4-int8-b128.engine";
-	DataType dtype = DataType::kINT8;
+	const std::string wtspath = "D:/AAAA/tensorrtyolov4/model/vehicledetection.wts";
+	const std::string enginepath = "../Export/model/vehicledetection_fp16.engine";
+	DataType dtype = DataType::kHALF;
 
 	CreateTRTEngine(wtspath, enginepath, dtype);
 

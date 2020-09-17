@@ -10,7 +10,7 @@ namespace YoloParam
 	static constexpr int CHECK_COUNT = 3;//check input image channel
 	static constexpr float IGNORE_THRESH = 0.1f;//
 	static constexpr int MAX_OUTPUT_BBOX_COUNT = 1000;//the max output obj count
-	static constexpr int CLASS_NUM = 80;//number of categories
+	static constexpr int CLASS_NUM = 3;//number of categories
 	static constexpr int INPUT_H = 416;//input height
 	static constexpr int INPUT_W = 416;//input width
 

@@ -11,7 +11,6 @@
 #include <string>
 #include "cudnn.h"
 #include "cublas.h"
-#include "opencv2/opencv.hpp"
 using Severity = nvinfer1::ILogger::Severity;
 
 

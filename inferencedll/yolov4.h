@@ -8,7 +8,6 @@
 #include <vector>
 #include <string>
 #include <chrono>
-#include <opencv2/opencv.hpp>
 #include <dirent.h>
 #include "NvInfer.h"
 #include "NvInferPlugin.h"
@@ -18,6 +17,8 @@
 #include "mish.h"
 #include "../Export/include/PersonDetectionSdk.h"
 #include "yoloparam.h"
+
+#include "opencv2/opencv.hpp"
 
 #define NOMINMAX
 
@@ -47,6 +48,11 @@ static const char* INPUT_BLOB_NAME = "data";
 static const char* OUTPUT_BLOB_NAME = "prob";
 static Logger gLogger;
 
+//tensorrt input data ; data arrangement is NCHW
+static float data[BATCH_SIZE * 3 * INPUT_H * INPUT_W];
+//tensorrt inference result
+static float prob[BATCH_SIZE * OUTPUT_SIZE];
+
 using namespace nvinfer1;
 
 class YoloV4Detection
@@ -56,14 +62,16 @@ public:
 	~YoloV4Detection();
 	int Init(const std::string enginepath);
 	int RunInference(float* inputdata, float* outputprob, const int batchsize);
+	int RunInference(float* inputdata, const int batchsize, const int width, const int height, DetectImagesResult* result);
+	int RunInference(const InputData *input,DetectImagesResult* result);
 
 private:
 	int doInference(IExecutionContext& context, float* input, float* output, int batchSize);
-	//cv::Rect get_rect(cv::Mat& img, float bbox[4]);
-	//cv::Mat preprocess_img(cv::Mat& img);
-	//void nms(std::vector<YoloParam::Detection>& res, float *output, float nms_thresh = NMS_THRESH);
-	//float iou(float lbox[4], float rbox[4]);
-	//bool cmp(YoloParam::Detection& a, YoloParam::Detection& b);
+	cv::Rect get_rect(const int width, const int height, float bbox[4]);
+	cv::Mat preprocess_img(cv::Mat& img);
+	void nms(std::vector<YoloParam::Detection>& res, float *output, float nms_thresh = NMS_THRESH);
+	float iou(float lbox[4], float rbox[4]);
+	bool cmp(YoloParam::Detection& a, YoloParam::Detection& b);
 
 private:
 	size_t trt_size{ 0 };
